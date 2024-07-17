@@ -1,36 +1,48 @@
 import pygame
+from pygame.locals import *
 
 pygame.init()
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+screen_width = 600;
+screen_height = 500;
 
-# This is the view for the game
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Pong')
 
-player = pygame.Rect((300,250,50,50))
+# Game variables
 
-# Game Loop
-run = True;
+font = pygame.font.SysFont('Sans Serif', 32)
+margin = 50
+cpu_score = 0 
+player_score = 0 
 
+
+# Colors
+
+bg = (120, 100 , 130)
+white =  (255, 255, 255)
+
+def draw_board():
+    screen.fill(bg)
+    pygame.draw.line(screen, white, (0, margin) , (screen_width, margin))
+
+
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+
+# Game loop
+
+run = True
 while run:
-    screen.fill((110,40,20))
-    pygame.draw.rect(screen,(255,230,22),player)
 
-    key = pygame.key.get_pressed()
-    if key[pygame.K_a] == True:
-        player.move_ip(-1,0)
-    elif key[pygame.K_d] == True:
-        player.move_ip(1,0)
-    elif key[pygame.K_s] == True:
-        player.move_ip(0,1)
-    elif key[pygame.K_w] == True:
-        player.move_ip(0,-1)
-
+    draw_board() # This fills the background
+    draw_text('CPU: ' + str(cpu_score), font , white , 20, 15)
+    draw_text('P1: ' + str(player_score), font , white , screen_width - 100, 15)
+    # Event Handler to close the game
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: # this is an event handler and checks input
+        if event.type == pygame.QUIT:
             run = False
 
-    pygame.display.update()
-
-pygame.QUIT()
+    pygame.display.update() # This makes the changes in the code actually display
+pygame.quit()
